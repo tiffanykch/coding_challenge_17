@@ -18,7 +18,6 @@ class Customer{
 
     getTotalSpent() {
         let totalSpent = this.purchaseHistory.reduce((sum, total) => sum + total, 0);
-        console.log(`Total Spend: $${totalSpent}`);
         return totalSpent;
     };
 }
@@ -31,7 +30,7 @@ const customer3 = new Customer("Perry The Platypus", "pplatypus@owca.gov")
 customer1.addPurchase(200);
 customer1.addPurchase(500);
 customer1.addPurchase(100);
-customer1.getTotalSpent();
+console.log(customer1.getTotalSpent());
 
 // TASK 2: CREATE A SALESREP CLASS
 class SalesRep{
@@ -61,3 +60,24 @@ class SalesRep{
 const rep1 = new SalesRep("Mario")
 rep1.addClient(customer1);
 rep1.getClientTotal("Phineas Flynn");
+
+// TASK 3: CREATE VIPCUSTOMER CLASS (EXTENDS CUSTOMER)
+class VIPCustomer extends Customer {
+    constructor(name, email,vipLevel) {
+        super(name, email);
+        this.vipLevel = vipLevel;
+    };
+
+    getTotalSpent() {
+        const total = super.getTotalSpent()
+        let bonus = 0.1;
+        const totalBonus = total * (1 + bonus);
+        return totalBonus;
+    };
+}
+
+// Test Case
+const vip1 = new VIPCustomer("Christopher Smith", "csmith@usf.edu", "Gold")
+vip1.addPurchase(234);
+vip1.addPurchase(3521);
+console.log(vip1.getTotalSpent());
