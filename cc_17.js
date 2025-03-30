@@ -9,15 +9,13 @@ class Customer{
     addPurchase(amount) {
         if(typeof amount === "number" && amount > 0) {
             this.purchaseHistory.push(amount);
-            console.log("Purchase amount succesfully added!");
         } else {
             console.log("Invalid purchase amount!");
-        }
-        
+        }  
     };
 
     getTotalSpent() {
-        let totalSpent = this.purchaseHistory.reduce((sum, total) => sum + total, 0);
+        let totalSpent = this.purchaseHistory.reduce((total, sum) => total + sum, 0);
         return totalSpent;
     };
 }
@@ -31,6 +29,10 @@ customer1.addPurchase(200);
 customer1.addPurchase(500);
 customer1.addPurchase(100);
 console.log(customer1.getTotalSpent());
+
+customer3.addPurchase(87);
+customer3.addPurchase(34);
+console.log(customer3.getTotalSpent());
 
 // TASK 2: CREATE A SALESREP CLASS
 class SalesRep{
@@ -59,6 +61,7 @@ class SalesRep{
 // Test Cases
 const rep1 = new SalesRep("Mario")
 rep1.addClient(customer1);
+rep1.addClient(customer3);
 rep1.getClientTotal("Phineas Flynn");
 
 // TASK 3: CREATE VIPCUSTOMER CLASS (EXTENDS CUSTOMER)
@@ -78,6 +81,32 @@ class VIPCustomer extends Customer {
 
 // Test Case
 const vip1 = new VIPCustomer("Christopher Smith", "csmith@usf.edu", "Gold")
+rep1.addClient(vip1);
 vip1.addPurchase(234);
 vip1.addPurchase(3521);
 console.log(vip1.getTotalSpent());
+
+// TASK 4: BUILD A CLIENT REPORT SYSTEM
+
+// Customer (regular + VIP) and sales rep already added in previous tasks
+
+function getClientReport(salesRep) {
+    
+    // Get total revenue
+    const totalRevenue = salesRep.clients.reduce((total, client) => total + client.getTotalSpent(), 0)
+    console.log(`Total Revenue: $${totalRevenue}`);   
+
+    // Find customers who spend over $500
+    const highSpendCustomers = salesRep.clients.filter(client => client.getTotalSpent() > 500);
+    console.log(`High Spend Customers: ${JSON.stringify(highSpendCustomers)}`);
+    
+    // Create array of customer names and total spent
+    const allCustomers = salesRep.clients.map(client => ({
+        name: client.name,
+        totalSpent: client.getTotalSpent()
+    }));
+    
+    console.log(`All Customers Summary: ${JSON.stringify(allCustomers)}`);
+}
+
+getClientReport(rep1);
